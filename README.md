@@ -8,9 +8,13 @@ Camenger is a very basic messenger, and is one of my first projects on GitHub.
 
 How to Install
 =============
-Download the project in .zip or .tar.gz format
+Download the project in .zip or .tar.gz format.
+
 Extract the files.
+
 Run Camenger.jar
+
+
 
 Note: Camenger only works with Java 8.
 

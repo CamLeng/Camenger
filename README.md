@@ -1,7 +1,7 @@
-Java-Projects
+Camenger
 =============
 
-Some Java projects I have been working on.
+Camenger is a personal messenger. You can send text to and from someone else that has this same app, provided you have a shared folder of some sort. Camenger saves the serialized string object to a file in your shared folder. The file can then be opened by Camenger and displayed to the user in plain text.
 
 Note: Camenger only works with Java 8.
 

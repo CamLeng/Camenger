@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+
 public class MyPanel extends JPanel  {
 	private JRadioButton sendMessage;
 	private JRadioButton checkNewMessage;

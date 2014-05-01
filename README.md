@@ -24,8 +24,8 @@ Get the latest JRE here: http://www.oracle.com/technetwork/java/javase/downloads
 
 
 About Me
-=============
-My name is Cameron Lengerich. I am 19 and am a freshman studying Computer Science at IPFW. Java is my first programming langauge, and I plan to learn more throughout my college career.
+============
+My name is Cameron Lengerich. I am 19 and am a freshman studying Computer Science at IPFW. Java is my first programming language, and I plan to learn more throughout my college career.
 
 Contact
 =============

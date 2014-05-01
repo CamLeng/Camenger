@@ -20,7 +20,7 @@ public class MyPanel extends JPanel  {
 	private JButton submit;
 	private String outgoingMessage;
 	private String incomingMessage;
-	private String errorMessage = "Something went wrong.";
+	private String errorMessage = "Hmm.. Something went wrong.";
 	private String messageFilePath;
 
 	public MyPanel() {

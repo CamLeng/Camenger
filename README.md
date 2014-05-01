@@ -19,6 +19,10 @@ Get the latest JDK release here: http://www.oracle.com/technetwork/java/javase/d
 Get the latest JRE here: http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
 
 
-About Me:
+About Me
 =============
 My name is Cameron Lengerich. I am 19 and am a freshman studying Computer Science at IPFW. Java is my first programming langauge, and I plan to learn more throughout my college career.
+
+Contact
+=============
+Email: cameron.lengerich@gmail.com

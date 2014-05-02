@@ -25,6 +25,7 @@ public class MyPanel extends JPanel  {
 	private JRadioButton checkNewMessage;
 	private ButtonGroup bg;
 	private JButton submit;
+	private boolean noMessage = false;
 	private String outgoingMessage;
 	private String incomingMessage;
 	private String errorMessage = "Hmm.. Something went wrong.";
@@ -37,14 +38,19 @@ public class MyPanel extends JPanel  {
 								"Step 3. Select your shared folder in the popup on the next screen and click \"Open\"";
 
 	public MyPanel() {
+		// get the file path of "message"
 		getFilePath();
 		
+		// create two radio buttons
 		sendMessage = new JRadioButton("Send message");
 		checkNewMessage = new JRadioButton("Check for new message");
+		
+		// create a button group and add the two radio buttons to it
 		bg = new ButtonGroup();
 		bg.add(sendMessage);
 		bg.add(checkNewMessage);
 
+		// create a submit button
 		submit = new JButton("Submit");
 
 		// what happens when the button is clicked
@@ -63,6 +69,7 @@ public class MyPanel extends JPanel  {
 				
 				case "send":
 					try {
+					
 						// gets the message from the user
 						outgoingMessage = JOptionPane.showInputDialog("New message");
 						
@@ -70,20 +77,28 @@ public class MyPanel extends JPanel  {
 						if (outgoingMessage.equals(String.valueOf(JOptionPane.CANCEL_OPTION))) {
 							break;
 						}
+						
 					// if the user tries to send an empty string, break out of the switch statement
 					} catch (NullPointerException npe) {
 						break;
 					}
+					
+					// if it made it this far, write the message
 					writeOutgoingMessage();
 					break;
 					
 				case "receive":
-					readIncomingMessage();
-					break;
 				
+					// read the incoming message
+					readIncomingMessage();
+					if (noMessage == false) {
+						JOptionPane.showMessageDialog(null, incomingMessage);
+					}
+					break;
 				}
 		});
 
+		// add the components to the panel
 		add(sendMessage);
 		add(checkNewMessage);
 		add(submit);
@@ -95,11 +110,9 @@ public class MyPanel extends JPanel  {
 	* located in the "messageFilePath" string.
 	*/
 	public void writeOutgoingMessage() {
-		FileOutputStream outFile;
-		ObjectOutputStream out;
 		try {
-			outFile = new FileOutputStream(messageFilePath);
-			out = new ObjectOutputStream(outFile);
+			FileOutputStream outFile = new FileOutputStream(messageFilePath);
+			ObjectOutputStream out = new ObjectOutputStream(outFile);
 			out.writeObject(outgoingMessage);
 			out.close();
 			outFile.close();
@@ -117,23 +130,25 @@ public class MyPanel extends JPanel  {
 		FileInputStream inFile;
 		ObjectInputStream in;
 		try {
+			noMessage = false;
 			inFile = new FileInputStream(messageFilePath);
 			in = new ObjectInputStream(inFile);
 			incomingMessage = (String) in.readObject();
 			in.close();
 			inFile.close();
-			JOptionPane.showMessageDialog(null, incomingMessage);
+			
+		// if there is no message
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No message");
+			noMessage = true;
 		}
 	}
 	
 	/**
-	* This file reads the message called messageFilePath and 
-	* assigns it to the variable messageFilePath. This, obviously, 
-	* contains the file path for "message."
+	* This method reads the file "messageFilePath" which contains 
+	* the file path for the file "message."
 	*/
-	public void readFilePath() throws Exception{
+	public void readFilePath() throws Exception {
 		FileInputStream inFile = new FileInputStream("messageFilePath");
 		ObjectInputStream in = new ObjectInputStream(inFile);
 		messageFilePath = (String) in.readObject();
@@ -169,6 +184,9 @@ public class MyPanel extends JPanel  {
 	}
 	
 	/**
+	* This method either reads the file path from the file 
+	* "messageFilePath" if it exists. If it does not exist,
+	* it asks the user to select a folder.
 	* 
 	*/
 	public void getFilePath() {
@@ -180,17 +198,17 @@ public class MyPanel extends JPanel  {
 		// if the program can't find a file called messageFilePath...
 		} catch (Exception e1) {
 			
-			// get the folder path the user selects
+			// get the folder path that the user selects
 			File folderPath = getSelectedFile();
 			
-			/* fix the slashes and add "/message" to the end
+			/* fix the slashes and add "/message" to the end.
 			I can do this because the message file is called 
-			message and is in the file path called folderPath */
+			"message" and is in the file path called folderPath */
 			try {
 				messageFilePath = fixSlashes(folderPath.toString()) + "/message";
 			} catch (NullPointerException e) {}
 			
-			// write the file path to 
+			// write the file path of "message" to the file called "messageFilePath"
 			try {
 				writeFilePath();
 			} catch (Exception e2) {
@@ -219,6 +237,11 @@ public class MyPanel extends JPanel  {
 		return newFilePath;
 	}
 
+	/**
+	* This method is called when the user wants to change the 
+	* file path. This method contains a switch statement which
+	* handles each case of what could happen (Yes, No, Cancel).
+	*/
 	public void changeMessageFilePath() {
 		/* ask if the user wants to delete their current conversation
 		when they change to a new folder */ 
@@ -249,6 +272,8 @@ public class MyPanel extends JPanel  {
 				break;
 			}
 		} catch (Exception e) {}
+		
+		// finally get the new file path
 		getFilePath();
 	}
 	

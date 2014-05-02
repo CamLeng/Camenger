@@ -38,6 +38,7 @@ public class MyPanel extends JPanel  {
 								"Step 3. Select your shared folder in the popup on the next screen and click \"Open\"";
 
 	public MyPanel() {
+	
 		// get the file path of "message"
 		getFilePath();
 		

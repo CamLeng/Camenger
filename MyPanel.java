@@ -29,6 +29,12 @@ public class MyPanel extends JPanel  {
 	private String incomingMessage;
 	private String errorMessage = "Hmm.. Something went wrong.";
 	private String messageFilePath;
+	private String directions = "Camenger uses shared folders created by cloud services\n" + 
+								"such as Dropbox or Google Drive in order to message people.\n\n" + 
+								
+								"Step 1. If you already have your shared folders set up, skip to step 3.\n" + 
+								"Step 2. Create a shared folder with every person with which you want to message.\n" + 
+								"Step 3. Select your shared folder in the popup on the next screen and click \"Open\"";
 
 	public MyPanel() {
 		getFilePath();
@@ -69,12 +75,12 @@ public class MyPanel extends JPanel  {
 						break;
 					}
 					
-					writeData();
+					writeOutgoingMessage();
 					
 					break;
 					
 				case "receive":
-					readData();
+					readIncomingMessage();
 					break;
 				
 				}
@@ -86,7 +92,11 @@ public class MyPanel extends JPanel  {
 
 	}
 	
-	public void writeData() {
+	/**
+	* Writes the outgoing message to the file "message" 
+	* located in the "messageFilePath" string.
+	*/
+	public void writeOutgoingMessage() {
 		FileOutputStream outFile;
 		ObjectOutputStream out;
 		try {
@@ -96,11 +106,16 @@ public class MyPanel extends JPanel  {
 			out.close();
 			outFile.close();
 		} catch (Exception e) {
+			// if the user didn't choose a folder, display "No folder path chosen"
 			JOptionPane.showMessageDialog(null, "No folder path chosen");
 		}
 	}
 	
-	public void readData() {
+	/**
+	* Reads the incoming message coming from the file "message" 
+	* located in the "messageFilePath" string.
+	*/
+	public void readIncomingMessage() {
 		FileInputStream inFile;
 		ObjectInputStream in;
 		try {
@@ -119,17 +134,14 @@ public class MyPanel extends JPanel  {
 		FileInputStream inFile;
 		ObjectInputStream in;
 		try {
-			inFile = new FileInputStream("messageFilePath.ser");
+			inFile = new FileInputStream("messageFilePath");
 			in = new ObjectInputStream(inFile);
 			messageFilePath = (String) in.readObject();
 			in.close();
 			inFile.close();
 		// if the program can't find a file called messageFilePath...
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(null, "Directions: " + 
-					"\n1. Create a shared folder using a service such as Dropbox or Google Drive or \nselect " + 
-					"a shared folder you have already created" + 
-					"\n\n2. Select the shared folder you just created");
+			JOptionPane.showMessageDialog(null, directions, "Directions", JOptionPane.PLAIN_MESSAGE);
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			fileChooser.showOpenDialog(null);
@@ -142,7 +154,7 @@ public class MyPanel extends JPanel  {
 			FileOutputStream outFile;
 			ObjectOutputStream out;
 			try {
-				outFile = new FileOutputStream("messageFilePath.ser");
+				outFile = new FileOutputStream("messageFilePath");
 				out = new ObjectOutputStream(outFile);
 				out.writeObject(messageFilePath);
 				out.close();
@@ -175,7 +187,7 @@ public class MyPanel extends JPanel  {
 			// if they say yes...
 			case JOptionPane.YES_OPTION:
 				// delete the message file path
-				new File("messageFilePath.ser").delete();
+				new File("messageFilePath").delete();
 				// delete the message
 				new File(messageFilePath).delete();
 				break;

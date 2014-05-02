@@ -74,9 +74,7 @@ public class MyPanel extends JPanel  {
 					} catch (NullPointerException npe) {
 						break;
 					}
-					
 					writeOutgoingMessage();
-					
 					break;
 					
 				case "receive":
@@ -130,41 +128,87 @@ public class MyPanel extends JPanel  {
 		}
 	}
 	
+	/**
+	* This file reads the message called messageFilePath and 
+	* assigns it to the variable messageFilePath. This, obviously, 
+	* contains the file path for "message."
+	*/
+	public void readFilePath() throws Exception{
+		FileInputStream inFile = new FileInputStream("messageFilePath");
+		ObjectInputStream in = new ObjectInputStream(inFile);
+		messageFilePath = (String) in.readObject();
+		in.close();
+		inFile.close();
+	}
+	
+	/**
+	* This method writes the file path of "message" to the file "messageFilePath"
+	*/
+	public void writeFilePath() throws Exception {
+		FileOutputStream outFile = new FileOutputStream("messageFilePath");
+		ObjectOutputStream out = new ObjectOutputStream(outFile);
+		out.writeObject(messageFilePath);
+		out.close();
+		outFile.close();
+	}
+	
+	/**
+	* This file gets the folder that the user selects
+	* and returns it
+	* 
+	* @return folderPath
+	*/
+	public File getSelectedFile() {
+		JOptionPane.showMessageDialog(null, directions, "Directions", JOptionPane.PLAIN_MESSAGE);
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.showOpenDialog(null);
+		File folderPath = fileChooser.getSelectedFile();
+		
+		return folderPath;
+	}
+	
+	/**
+	* 
+	*/
 	public void getFilePath() {
-		FileInputStream inFile;
-		ObjectInputStream in;
+		
+		// read the file path
 		try {
-			inFile = new FileInputStream("messageFilePath");
-			in = new ObjectInputStream(inFile);
-			messageFilePath = (String) in.readObject();
-			in.close();
-			inFile.close();
+			readFilePath();
+			
 		// if the program can't find a file called messageFilePath...
 		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(null, directions, "Directions", JOptionPane.PLAIN_MESSAGE);
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fileChooser.showOpenDialog(null);
-			File myFile = fileChooser.getSelectedFile();
 			
+			// get the folder path the user selects
+			File folderPath = getSelectedFile();
+			
+			/* fix the slashes and add "/message" to the end
+			I can do this because the message file is called 
+			message and is in the file path called folderPath */
 			try {
-				messageFilePath = fixSlashes(myFile.toString()) + "/message";
+				messageFilePath = fixSlashes(folderPath.toString()) + "/message";
 			} catch (NullPointerException e) {}
-				
-			FileOutputStream outFile;
-			ObjectOutputStream out;
+			
+			// write the file path to 
 			try {
-				outFile = new FileOutputStream("messageFilePath");
-				out = new ObjectOutputStream(outFile);
-				out.writeObject(messageFilePath);
-				out.close();
-				outFile.close();
+				writeFilePath();
 			} catch (Exception e2) {
 				JOptionPane.showMessageDialog(null, errorMessage);
 			}
 		}
 	}
 	
+	/**
+	* Windows shows file paths by backslashes (\), I need to 
+	* convert those to forward slashes (/). This method changes 
+	* each backslash to a forward slash.
+	* 
+	* This method will only be useful on Windows machines
+	*
+	* @param filepath
+	* @return newFilePath
+	*/
 	public StringBuffer fixSlashes(String filePath) {
 		StringBuffer newFilePath = new StringBuffer(filePath);
 		for (int i=0; i<filePath.length(); i++) {

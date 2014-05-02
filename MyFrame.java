@@ -6,8 +6,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+/**
+* This class creates a JFrame with a menubar
+* used to access other options
+*/
 public class MyFrame extends JFrame {
 	MyPanel panel = new MyPanel();
+
 	public MyFrame() {
 		setLocation(500, 200);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

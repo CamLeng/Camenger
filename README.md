@@ -29,4 +29,4 @@ My name is Cameron Lengerich. I am 19 and am a freshman studying Computer Scienc
 
 Contact
 =============
-Email: cameron.lengerich@gmail.com
+Feel free to leave any feedback or suggestions at cameron.lengerich@gmail.com

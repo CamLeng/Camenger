@@ -119,6 +119,7 @@ public class MyPanel extends JPanel  {
 	
 	/**
 	* Decides if the user clicked "Cancel" on the "Input message" dialog
+	* @return true/false
 	*/
 	public boolean clickedCancel() {
 		

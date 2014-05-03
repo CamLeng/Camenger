@@ -75,7 +75,7 @@ public class MyPanel extends JPanel  {
 						outgoingMessage = JOptionPane.showInputDialog("New message");
 						
 						// if the user clicks "Cancel," break out of the switch statement
-						if (outgoingMessage.equals(String.valueOf(JOptionPane.CANCEL_OPTION))) {
+						if (clickedCancel()) {
 							break;
 						}
 						
@@ -104,6 +104,17 @@ public class MyPanel extends JPanel  {
 		add(checkNewMessage);
 		add(submit);
 
+	}
+	
+	/**
+	* Decides if the user clicked "Cancel"
+	*/
+	public boolean clickedCancel() {
+		
+		if (outgoingMessage.equals(String.valueOf(JOptionPane.CANCEL_OPTION))) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**

@@ -301,6 +301,11 @@ public class MyPanel extends JPanel  {
 		getFilePath();
 	}
 	
+	/**
+	* Returns the variable messageExists
+	* 
+	* @return messageExists
+	*/
 	public boolean getMessageExists() {
 		return messageExists;
 	}

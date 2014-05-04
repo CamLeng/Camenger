@@ -25,7 +25,7 @@ public class MyPanel extends JPanel  {
 	private JRadioButton checkNewMessage;
 	private ButtonGroup bg;
 	private JButton submit;
-	private boolean noMessage = false;
+	private boolean messageExists = false;
 	private String outgoingMessage;
 	private String incomingMessage;
 	private String errorMessage = "Hmm.. Something went wrong.";
@@ -37,6 +37,11 @@ public class MyPanel extends JPanel  {
 								"Step 2. Create a shared folder with every person with which you want to message.\n" + 
 								"Step 3. Select your shared folder in the popup on the next screen and click \"Open\"";
 
+	/**
+	* This constructor adds all of the components to the
+	* panel and contains the switch statement for the 
+	* different types of transactions (send or receive)
+	*/
 	public MyPanel() {
 	
 		// get the file path of "message"
@@ -68,6 +73,7 @@ public class MyPanel extends JPanel  {
 				
 				switch (transaction) {
 				
+				// if the transaction is outgoing...
 				case "send":
 					try {
 					
@@ -75,7 +81,7 @@ public class MyPanel extends JPanel  {
 						outgoingMessage = JOptionPane.showInputDialog("New message");
 						
 						// if the user clicks "Cancel," break out of the switch statement
-						if (outgoingMessage.equals(String.valueOf(JOptionPane.CANCEL_OPTION))) {
+						if (clickedCancel()) {
 							break;
 						}
 						
@@ -88,11 +94,16 @@ public class MyPanel extends JPanel  {
 					writeOutgoingMessage();
 					break;
 					
+				// if the transaction is incoming...
 				case "receive":
 				
 					// read the incoming message
 					readIncomingMessage();
-					if (noMessage == false) {
+					
+					// if the message exists...
+					if (getMessageExists()){
+					
+						// display the message
 						JOptionPane.showMessageDialog(null, incomingMessage);
 					}
 					break;
@@ -104,6 +115,18 @@ public class MyPanel extends JPanel  {
 		add(checkNewMessage);
 		add(submit);
 
+	}
+	
+	/**
+	* Decides if the user clicked "Cancel" on the "Input message" dialog
+	* @return true/false
+	*/
+	public boolean clickedCancel() {
+		
+		if (outgoingMessage.equals(String.valueOf(JOptionPane.CANCEL_OPTION))) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -131,7 +154,7 @@ public class MyPanel extends JPanel  {
 		FileInputStream inFile;
 		ObjectInputStream in;
 		try {
-			noMessage = false;
+			messageExists = true;
 			inFile = new FileInputStream(messageFilePath);
 			in = new ObjectInputStream(inFile);
 			incomingMessage = (String) in.readObject();
@@ -141,7 +164,7 @@ public class MyPanel extends JPanel  {
 		// if there is no message
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No message");
-			noMessage = true;
+			messageExists = false;
 		}
 	}
 	
@@ -252,14 +275,14 @@ public class MyPanel extends JPanel  {
 		try {
 			switch (option) {
 			
-			// if they say yes...
+			// if they hit "Yes"...
 			case JOptionPane.YES_OPTION:
 				// delete the message file path
 				new File("messageFilePath").delete();
 				// delete the message
 				new File(messageFilePath).delete();
 				break;
-			// if they say no...
+			// if they hit "No"...
 			case JOptionPane.NO_OPTION:
 				/* delete the message file path (even though we don't 
 				wish to delete the current message, we still want to 
@@ -276,6 +299,15 @@ public class MyPanel extends JPanel  {
 		
 		// finally get the new file path
 		getFilePath();
+	}
+	
+	/**
+	* Returns the variable messageExists
+	* 
+	* @return messageExists
+	*/
+	public boolean getMessageExists() {
+		return messageExists;
 	}
 	
 }
